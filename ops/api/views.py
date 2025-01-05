@@ -9,6 +9,11 @@ def hello():
     return jsonify({"message": "Hello from Flask!"})
 
 
+@api.route("/health")
+def health():
+    return jsonify({"status": "ok"})
+
+
 @api.errorhandler(404)
 def not_found(error):
     return jsonify({"error": "Resource not found"}), 404
