@@ -1,6 +1,6 @@
 import os
-from utils.main import str_to_bool
 
+from utils.main import str_to_bool
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = bool(str_to_bool(os.getenv("FLASK_DEBUG", "false")))

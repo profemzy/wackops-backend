@@ -2,8 +2,8 @@
 
 import multiprocessing
 import os
-from utils.main import str_to_bool
 
+from utils.main import str_to_bool
 
 bind = f"0.0.0.0:{os.getenv('PORT', '8000')}"
 accesslog = "-"
