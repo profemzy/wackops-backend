@@ -1,7 +1,7 @@
 import os
-from openai import AzureOpenAI
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
+from openai import AzureOpenAI
 
 load_dotenv()
 endpoint = os.getenv(

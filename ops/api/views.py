@@ -1,13 +1,17 @@
 import json
-from datetime import datetime
-from http import HTTPStatus
-from zoneinfo import ZoneInfo
-from typing import Tuple
 import logging
+from datetime import datetime
 from functools import wraps
-from utils.openai import get_answer
+from http import HTTPStatus
+from typing import Tuple
+from zoneinfo import ZoneInfo
 
-from flask import Blueprint, jsonify, request, Response
+from flask import Blueprint
+from flask import Response
+from flask import jsonify
+from flask import request
+
+from utils.openai import get_answer
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -122,7 +126,7 @@ def health() -> Tuple[Response, int]:
             {
                 "status": "healthy",
                 "timestamp": datetime.now(ZoneInfo("UTC")).isoformat(),
-                "version": "1.0.0",  # Consider pulling from config or environment
+                "version": "1.0.0",
             }
         ),
         HTTPStatus.OK,
