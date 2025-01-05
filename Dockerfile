@@ -68,8 +68,8 @@ ENV FLASK_DEBUG="${FLASK_DEBUG}" \
 COPY --chown=python:python --from=assets /app/public /public
 COPY --chown=python:python . .
 
-#RUN if [ "${FLASK_DEBUG}" != "true" ]; then \
-#  ln -s /public /app/public && flask digest compile && rm -rf /app/public; fi
+RUN if [ "${FLASK_DEBUG}" != "true" ]; then \
+  ln -s /public /app/public && flask digest compile && rm -rf /app/public; fi
 
 ENTRYPOINT ["/app/bin/docker-entrypoint-web"]
 

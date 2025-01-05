@@ -24,3 +24,5 @@ Flask-Secrets==0.1.0
 Flask-DB==0.4.1
 
 setuptools==75.6.0
+openai==1.59.3
+python-dotenv==1.0.1
