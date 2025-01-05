@@ -7,6 +7,8 @@ x-app: &default-app
       - "GID=${GID:-1000}"
       - "FLASK_DEBUG=${FLASK_DEBUG:-false}"
       - "NODE_ENV=${NODE_ENV:-production}"
+      - "AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}"
+      - "AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}"
   depends_on:
     postgres:
       condition: "service_started"
