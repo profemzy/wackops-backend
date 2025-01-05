@@ -172,6 +172,8 @@ function ci:test {
   . .env
   wait-until "docker compose exec -T \
     -e PGPASSWORD=${POSTGRES_PASSWORD} postgres \
+    -e AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}  test\
+    -e AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}  test\
     psql -U ${POSTGRES_USER} ${POSTGRES_USER} -c 'SELECT 1'"
 
   docker compose logs
