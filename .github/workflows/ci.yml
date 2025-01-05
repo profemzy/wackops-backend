@@ -51,6 +51,7 @@ jobs:
 
       - name: "Build and push Docker image"
         run: |
-          docker build --build-arg UID=1000 --build-arg GID=1000 --build-arg FLASK_DEBUG=false --build-arg NODE_ENV=production -t ${{ secrets.ACR_LOGIN_SERVER }}/my_image:latest .
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/my_image:latest
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/my_image:${{ github.sha }}
+          docker build --build-arg UID=1000 --build-arg GID=1000 --build-arg FLASK_DEBUG=false --build-arg NODE_ENV=production -t ${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend:latest .
+          docker tag ${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend:latest ${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend:${{ github.sha }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend:latest
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend:${{ github.sha }}
