@@ -11,7 +11,7 @@ def hello():
 
 @api.route("/health")
 def health():
-    return jsonify({"status": "ok"})
+    return jsonify({"status": "API is up and running"})
 
 
 @api.errorhandler(404)
