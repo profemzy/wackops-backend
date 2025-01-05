@@ -1,9 +1,7 @@
 import os
 
-from dotenv import load_dotenv
 from openai import AzureOpenAI
 
-load_dotenv()
 endpoint = os.getenv(
     "AZURE_OPENAI_ENDPOINT", "https://eastus.api.cognitive.microsoft.com/"
 )

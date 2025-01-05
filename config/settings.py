@@ -3,6 +3,8 @@ import os
 from utils.main import str_to_bool
 
 SECRET_KEY = os.environ["SECRET_KEY"]
+AZURE_OPENAI_API_KEY = os.environ["AZURE_OPENAI_API_KEY"]
+AZURE_OPENAI_ENDPOINT = os.environ["AZURE_OPENAI_ENDPOINT"]
 DEBUG = bool(str_to_bool(os.getenv("FLASK_DEBUG", "false")))
 
 SERVER_NAME = os.getenv(
