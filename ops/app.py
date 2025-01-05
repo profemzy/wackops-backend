@@ -4,11 +4,11 @@ from flask import Flask
 from werkzeug.debug import DebuggedApplication
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+from ops.api.views import api
 from ops.extensions import db
 from ops.extensions import debug_toolbar
 from ops.extensions import flask_static_digest
 from ops.page.views import page
-from ops.api.views import api
 from ops.up.views import up
 
 

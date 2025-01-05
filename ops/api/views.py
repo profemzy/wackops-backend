@@ -1,16 +1,18 @@
-from flask import Blueprint, jsonify
-
-from config.settings import DEBUG
+from flask import Blueprint
+from flask import jsonify
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
-@api.route('/')
+
+@api.route("/")
 def hello():
     return jsonify({"message": "Hello from Flask!"})
+
 
 @api.errorhandler(404)
 def not_found(error):
     return jsonify({"error": "Resource not found"}), 404
+
 
 @api.errorhandler(500)
 def server_error(error):

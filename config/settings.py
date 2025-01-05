@@ -1,10 +1,11 @@
 import os
 
+
 def str_to_bool(value: str) -> bool:
     """Convert string to boolean, accepting various truth values."""
     value = value.lower()
-    true_values = ('true', '1', 'yes', 'on', 't')
-    false_values = ('false', '0', 'no', 'off', 'f')
+    true_values = ("true", "1", "yes", "on", "t")
+    false_values = ("false", "0", "no", "off", "f")
 
     if value in true_values:
         return True
@@ -12,6 +13,7 @@ def str_to_bool(value: str) -> bool:
         return False
     else:
         raise ValueError(f"Invalid boolean value: {value}")
+
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = bool(str_to_bool(os.getenv("FLASK_DEBUG", "false")))
