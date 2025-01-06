@@ -93,6 +93,9 @@ services:
     <<: *default-app
     command: celery -A "ops.app.celery_app" worker -l "${CELERY_LOG_LEVEL:-info}"
     entrypoint: []
+    environment:
+      AZURE_OPENAI_API_KEY: "${AZURE_OPENAI_API_KEY}"
+      AZURE_OPENAI_ENDPOINT: "${AZURE_OPENAI_ENDPOINT}"
     deploy:
       resources:
         limits:
