@@ -16,6 +16,9 @@ x-app: &default-app
     redis:
       condition: "service_started"
       required: false
+  environment:
+    AZURE_OPENAI_API_KEY: "${AZURE_OPENAI_API_KEY:-test}"
+    AZURE_OPENAI_ENDPOINT: "${AZURE_OPENAI_ENDPOINT:-http://localhost:8000}"
   env_file:
     - ".env"
   restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
@@ -93,9 +96,6 @@ services:
     <<: *default-app
     command: celery -A "ops.app.celery_app" worker -l "${CELERY_LOG_LEVEL:-info}"
     entrypoint: []
-    environment:
-      AZURE_OPENAI_API_KEY: "${AZURE_OPENAI_API_KEY:-test}"
-      AZURE_OPENAI_ENDPOINT: "${AZURE_OPENAI_ENDPOINT:-http://localhost:8000}"
     deploy:
       resources:
         limits:
