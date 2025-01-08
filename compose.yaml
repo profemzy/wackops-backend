@@ -9,9 +9,6 @@ x-app: &default-app
       - "NODE_ENV=${NODE_ENV:-production}"
       - "AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}"
       - "AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}"
-      - "PUSHER_APP_ID=${PUSHER_APP_ID}"
-      - "PUSHER_KEY=${PUSHER_KEY}"
-      - "PUSHER_SECRET=${PUSHER_SECRET}"
   depends_on:
     postgres:
       condition: "service_started"
@@ -22,9 +19,6 @@ x-app: &default-app
   environment:
     AZURE_OPENAI_API_KEY: "${AZURE_OPENAI_API_KEY:-test}"
     AZURE_OPENAI_ENDPOINT: "${AZURE_OPENAI_ENDPOINT:-http://localhost:8000}"
-    PUSHER_APP_ID: "${PUSHER_APP_ID}"
-    PUSHER_KEY: "${PUSHER_KEY}"
-    PUSHER_SECRET: "${PUSHER_SECRET}"
   env_file:
     - ".env"
   restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"

@@ -22,9 +22,9 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
 
 # Configure Pusher (you can leave the last 2 settings alone).
-PUSHER_APP_ID = os.getenv("PUSHER_APP_ID", None)
-PUSHER_KEY = os.getenv("PUSHER_KEY", None)
-PUSHER_SECRET = os.getenv("PUSHER_SECRET", None)
+PUSHER_APP_ID = os.getenv("PUSHER_APP_ID", "123")
+PUSHER_KEY = os.getenv("PUSHER_KEY", "123")
+PUSHER_SECRET = os.getenv("PUSHER_SECRET", "123")
 PUSHER_CLUSTER = os.getenv("PUSHER_CLUSTER", "us2")
 PUSHER_SSL = True
 PUSHER_AUTH_ENDPOINT = "/api/auth/pusher/"
