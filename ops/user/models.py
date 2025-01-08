@@ -2,9 +2,9 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
-from ops.research.models import Research
 from lib.util_sqlalchemy import ResourceMixin
 from ops.extensions import db
+from ops.research.models import Research
 
 
 class User(ResourceMixin, db.Model):
@@ -12,7 +12,9 @@ class User(ResourceMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # Relationships.
-    researches = db.relationship(Research, backref="researches", passive_deletes=True)
+    researches = db.relationship(
+        Research, backref="researches", passive_deletes=True
+    )
 
     # Authentication.
     username = db.Column(db.String(24), unique=True, index=True)

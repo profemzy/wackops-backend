@@ -47,10 +47,10 @@ def post():
         return jsonify(response), 422
 
     new_user = User()
-    new_user .email = data.get("email")
-    new_user .username = data.get("username")
-    new_user .password = User.encrypt_password(data.get("password"))
+    new_user.email = data.get("email")
+    new_user.username = data.get("username")
+    new_user.password = User.encrypt_password(data.get("password"))
 
-    new_user .save()
+    new_user.save()
 
     return jsonify(data), 200

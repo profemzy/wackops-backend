@@ -1,16 +1,18 @@
 import json
+
 from flask import Blueprint
-from flask import request
 from flask import jsonify
-from flask_jwt_extended import jwt_required
+from flask import request
 from flask_jwt_extended import current_user
+from flask_jwt_extended import jwt_required
 from marshmallow import ValidationError
-from ops.user.models import User
-from utils.openai import get_answer
+
 from lib.flask_pusher import pusher
 from ops.research.models import Research
-
-from ops.research.schemas import research_schema, add_research_schema
+from ops.research.schemas import add_research_schema
+from ops.research.schemas import research_schema
+from ops.user.models import User
+from utils.openai import get_answer
 
 researches = Blueprint("researches", __name__, url_prefix="/researches/")
 
@@ -20,6 +22,7 @@ researches = Blueprint("researches", __name__, url_prefix="/researches/")
 def before_request():
     """We want all of these endpoints to be authenticated."""
     pass
+
 
 @researches.get("/")
 def index():
@@ -43,6 +46,7 @@ def index():
 
     return jsonify(response), 200
 
+
 @researches.post("")
 def post():
     json_data = request.get_json()
@@ -63,9 +67,7 @@ def post():
     result = get_answer(data["question"], context)
 
     parsed_result = json.loads(result)
-    answer_content = parsed_result["choices"][0]["message"][
-        "content"
-    ]
+    answer_content = parsed_result["choices"][0]["message"]["content"]
 
     research = Research()
     research.user_id = current_user.id
@@ -80,7 +82,7 @@ def post():
             "question": research.question,
             "answer": research.answer,
             "username": current_user.username,
-         },
+        },
     )
 
     response = {
@@ -88,7 +90,7 @@ def post():
             "created_on": research.created_on,
             "id": research.id,
             "question": research.question,
-            "answer": research.answer
+            "answer": research.answer,
         }
     }
 

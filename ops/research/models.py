@@ -1,7 +1,7 @@
 from sqlalchemy import desc
 
-from ops.extensions import db
 from lib.util_sqlalchemy import ResourceMixin
+from ops.extensions import db
 
 
 class Research(ResourceMixin, db.Model):
@@ -28,4 +28,8 @@ class Research(ResourceMixin, db.Model):
         :type limit: int
         :return: SQLAlchemy result
         """
-        return Research.query.order_by(desc(Research.created_on)).limit(limit).all()
+        return (
+            Research.query.order_by(desc(Research.created_on))
+            .limit(limit)
+            .all()
+        )
