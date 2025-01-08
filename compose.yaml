@@ -9,6 +9,9 @@ x-app: &default-app
       - "NODE_ENV=${NODE_ENV:-production}"
       - "AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}"
       - "AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}"
+      - "PUSHER_APP_ID=${PUSHER_APP_ID}"
+      - "PUSHER_KEY=${PUSHER_KEY}"
+      - "PUSHER_SECRET=${PUSHER_SECRET}"
   depends_on:
     postgres:
       condition: "service_started"
