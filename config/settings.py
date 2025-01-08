@@ -3,8 +3,6 @@ import os
 from utils.main import str_to_bool
 
 SECRET_KEY = os.environ["SECRET_KEY"]
-AZURE_OPENAI_API_KEY = os.environ["AZURE_OPENAI_API_KEY"]
-AZURE_OPENAI_ENDPOINT = os.environ["AZURE_OPENAI_ENDPOINT"]
 DEBUG = bool(str_to_bool(os.getenv("FLASK_DEBUG", "false")))
 
 SERVER_NAME = os.getenv(
@@ -30,6 +28,10 @@ PUSHER_SECRET = os.getenv("PUSHER_SECRET", None)
 PUSHER_CLUSTER = os.getenv("PUSHER_CLUSTER", "us2")
 PUSHER_SSL = True
 PUSHER_AUTH_ENDPOINT = "/api/auth/pusher/"
+
+# Configure AZURE OPENAI API
+AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY", None)
+AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT", None)
 
 # Celery.
 CELERY_CONFIG = {
