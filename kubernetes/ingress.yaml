@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  name: wackops-backend-ingress
+  namespace: wackops
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  rules:
+  - host: backend.ops.infotitans.ca
+    http:
+      paths:
+      - backend:
+          service:
+            name: wackops-backend-service
+            port:
+              number: 8000
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - backend.ops.infotitans.ca
+    secretName: ops-infotitan-ca-tls

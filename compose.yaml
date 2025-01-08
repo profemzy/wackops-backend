@@ -49,15 +49,15 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "${DOCKER_POSTGRES_CPUS:-0}"
-          memory: "${DOCKER_POSTGRES_MEMORY:-0}"
+          cpus: "0"
+          memory: "0"
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       # POSTGRES_DB: "${POSTGRES_DB}"
     image: "postgres:17.2-bookworm"
     profiles: ["postgres"]
-    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    restart: "unless-stopped"
     stop_grace_period: "3s"
     volumes:
       - "postgres:/var/lib/postgresql/data"
@@ -66,11 +66,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "${DOCKER_REDIS_CPUS:-0}"
-          memory: "${DOCKER_REDIS_MEMORY:-0}"
+          cpus: "0"
+          memory: "0"
     image: "redis:7.4.1-bookworm"
     profiles: ["redis"]
-    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    restart: "unless-stopped"
     stop_grace_period: "3s"
     volumes:
       - "redis:/data"
@@ -80,8 +80,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "${DOCKER_WEB_CPUS:-0}"
-          memory: "${DOCKER_WEB_MEMORY:-0}"
+          cpus: "0"
+          memory: "0"
     healthcheck:
       test: "${DOCKER_WEB_HEALTHCHECK_TEST:-curl localhost:8000/up}"
       interval: "60s"
@@ -99,8 +99,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "${DOCKER_WORKER_CPUS:-0}"
-          memory: "${DOCKER_WORKER_MEMORY:-0}"
+          cpus: "0"
+          memory: "0"
     profiles: ["worker"]
 
   js:

@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wackops-backend
+  namespace: wackops
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: backend
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - env:
+        - name: FLASK_ENV
+          value: production
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              key: secret-key
+              name: backend-secrets
+        - name: DATABASE_URI
+          valueFrom:
+            secretKeyRef:
+              key: database-uri
+              name: backend-secrets
+        - name: AZURE_OPENAI_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              key: azure_openai_endpoint
+              name: backend-secrets
+        - name: AZURE_OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: azure_openai_key
+              name: backend-secrets
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: postgres-user
+              name: backend-secrets
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+              secretKeyRef:
+                key: postgres-password
+                name: backend-secrets
+        - name: POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              key: postgres-host
+              name: backend-secrets
+        - name: CORS_ORIGINS
+          value: http://backend.ops.infotitans.ca
+        - name: PUSHER_APP_ID
+          valueFrom:
+            secretKeyRef:
+              key: pusher-app-id
+              name: backend-secrets
+        - name: PUSHER_KEY
+          valueFrom:
+              secretKeyRef:
+                key: pusher-key
+                name: backend-secrets
+        - name: PUSHER_SECRET
+          valueFrom:
+              secretKeyRef:
+                key: pusher-secret
+                name: backend-secrets
+        - name: PUSHER_CLUSTER
+          value: us3
+        image: aksacrtitanselxmjv3x.azurecr.io/wackops-backend:411fd96265fe8b878ef6e9fbee77d064d49c07e5
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /up
+            port: 8000
+            scheme: HTTP
+        name: backend
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /up
+            port: 8000
+            scheme: HTTP
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 512Mi

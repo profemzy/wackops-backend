@@ -22,7 +22,15 @@ Flask-DebugToolbar==0.16.0
 Flask-Static-Digest==0.4.1
 Flask-Secrets==0.1.0
 Flask-DB==0.4.1
+flask-marshmallow==1.3.0
+flask-jwt-extended==4.7.1
 
 setuptools==75.6.0
 openai==1.59.3
 python-dotenv==1.0.1
+
+marshmallow==3.24.1
+marshmallow-sqlalchemy==1.1.1
+pusher==3.3.2
+faker==33.3.0
+pytz==2024.2
