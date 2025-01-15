@@ -10,6 +10,7 @@ from ops.extensions import db
 from ops.extensions import debug_toolbar
 from ops.extensions import flask_static_digest
 from ops.extensions import jwt
+from ops.extensions import swagger
 from ops.page.views import page
 from ops.up.views import up
 from ops.user.models import User
@@ -74,7 +75,9 @@ def extensions(app):
     debug_toolbar.init_app(app)
     jwt.init_app(app)
     db.init_app(app)
+    swagger.init_app(app)
     flask_static_digest.init_app(app)
+
 
     return None
 
