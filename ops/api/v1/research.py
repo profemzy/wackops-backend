@@ -1,12 +1,12 @@
 import json
 
+from flasgger import swag_from
 from flask import Blueprint
 from flask import jsonify
 from flask import request
 from flask_jwt_extended import current_user
 from flask_jwt_extended import jwt_required
 from marshmallow import ValidationError
-from flasgger import swag_from
 
 from lib.flask_pusher import pusher
 from ops.research.models import Research
@@ -26,98 +26,91 @@ def before_request():
 
 
 @researches.get("/")
-@swag_from({
-    "tags": ["Research"],
-    "summary": "Get user research history",
-    "description": "Retrieves all research questions and answers for a specific user",
-    "security": [
-        {
-            "Bearer": []
-        }
-    ],
-    "parameters": [
-        {
-            "name": "username",
-            "in": "query",
-            "type": "string",
-            "required": True,
-            "description": "Username to fetch research history for",
-            "example": "john_doe"
-        }
-    ],
-    "responses": {
-        "200": {
-            "description": "Research history retrieved successfully",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
+@swag_from(
+    {
+        "tags": ["Research"],
+        "summary": "Get user research history",
+        "description": "Retrieves all research questions and answers for a specific user",
+        "security": [{"Bearer": []}],
+        "parameters": [
+            {
+                "name": "username",
+                "in": "query",
+                "type": "string",
+                "required": True,
+                "description": "Username to fetch research history for",
+                "example": "john_doe",
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Research history retrieved successfully",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "data": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {"type": "integer", "example": 1},
+                                    "question": {
+                                        "type": "string",
+                                        "example": "What is machine learning?",
+                                    },
+                                    "answer": {
+                                        "type": "string",
+                                        "example": "Machine learning is a branch of artificial intelligence...",
+                                    },
+                                    "created_on": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-01-14T18:39:03Z",
+                                    },
+                                },
+                            },
+                        }
+                    },
+                },
+            },
+            "400": {
+                "description": "Missing username parameter",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
                             "type": "object",
                             "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "example": 1
-                                },
-                                "question": {
+                                "message": {
                                     "type": "string",
-                                    "example": "What is machine learning?"
-                                },
-                                "answer": {
-                                    "type": "string",
-                                    "example": "Machine learning is a branch of artificial intelligence..."
-                                },
-                                "created_on": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "example": "2025-01-14T18:39:03Z"
+                                    "example": "Username does not exist.",
                                 }
-                            }
+                            },
                         }
-                    }
-                }
-            }
-        },
-        "400": {
-            "description": "Missing username parameter",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "error": {
-                        "type": "object",
-                        "properties": {
-                            "message": {
-                                "type": "string",
-                                "example": "Username does not exist."
-                            }
+                    },
+                },
+            },
+            "401": {"description": "Unauthorized - Valid JWT token required"},
+            "404": {
+                "description": "User not found",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Username does not exist.",
+                                }
+                            },
                         }
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
-        "401": {
-            "description": "Unauthorized - Valid JWT token required"
-        },
-        "404": {
-            "description": "User not found",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "error": {
-                        "type": "object",
-                        "properties": {
-                            "message": {
-                                "type": "string",
-                                "example": "Username does not exist."
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
-})
+)
 def index():
     response = {"error": {"message": "Username does not exist."}}
 
@@ -141,104 +134,94 @@ def index():
 
 
 @researches.post("")
-@swag_from({
-    "tags": ["Research"],
-    "summary": "Create new research question",
-    "description": "Submit a question to get AI-generated answer and save the research",
-    "security": [
-        {
-            "Bearer": []
-        }
-    ],
-    "parameters": [
-        {
-            "name": "body",
-            "in": "body",
-            "required": True,
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "question": {
-                        "type": "string",
-                        "example": "What is machine learning?",
-                        "description": "The research question to be answered"
-                    }
-                },
-                "required": ["question"]
-            }
-        }
-    ],
-    "responses": {
-        "200": {
-            "description": "Research created successfully",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "question": {
-                                "type": "string",
-                                "example": "What is machine learning?"
-                            },
-                            "answer": {
-                                "type": "string",
-                                "example": "Machine learning is a branch of artificial intelligence..."
-                            },
-                            "created_on": {
-                                "type": "string",
-                                "format": "date-time",
-                                "example": "2025-01-14T18:39:03Z"
-                            }
+@swag_from(
+    {
+        "tags": ["Research"],
+        "summary": "Create new research question",
+        "description": "Submit a question to get AI-generated answer and save the research",
+        "security": [{"Bearer": []}],
+        "parameters": [
+            {
+                "name": "body",
+                "in": "body",
+                "required": True,
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "question": {
+                            "type": "string",
+                            "example": "What is machine learning?",
+                            "description": "The research question to be answered",
                         }
-                    }
-                }
+                    },
+                    "required": ["question"],
+                },
             }
+        ],
+        "responses": {
+            "200": {
+                "description": "Research created successfully",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "data": {
+                            "type": "object",
+                            "properties": {
+                                "id": {"type": "integer", "example": 1},
+                                "question": {
+                                    "type": "string",
+                                    "example": "What is machine learning?",
+                                },
+                                "answer": {
+                                    "type": "string",
+                                    "example": "Machine learning is a branch of artificial intelligence...",
+                                },
+                                "created_on": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2025-01-14T18:39:03Z",
+                                },
+                            },
+                        }
+                    },
+                },
+            },
+            "400": {
+                "description": "Invalid request body",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {"type": "string", "example": "Invalid input"}
+                    },
+                },
+            },
+            "401": {"description": "Unauthorized - Valid JWT token required"},
+            "422": {
+                "description": "Validation error",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "type": "object",
+                            "description": "Validation error messages",
+                        }
+                    },
+                },
+            },
         },
-        "400": {
-            "description": "Invalid request body",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "error": {
-                        "type": "string",
-                        "example": "Invalid input"
-                    }
-                }
-            }
+        "x-webhook": {
+            "name": "Pusher Event",
+            "url": "private-research",
+            "event": "new-research",
+            "description": "Real-time notification sent when new research is created",
+            "payload": {
+                "question": "string",
+                "answer": "string",
+                "username": "string",
+            },
         },
-        "401": {
-            "description": "Unauthorized - Valid JWT token required"
-        },
-        "422": {
-            "description": "Validation error",
-            "schema": {
-                "type": "object",
-                "properties": {
-                    "error": {
-                        "type": "object",
-                        "description": "Validation error messages"
-                    }
-                }
-            }
-        }
-    },
-    "x-webhook": {
-        "name": "Pusher Event",
-        "url": "private-research",
-        "event": "new-research",
-        "description": "Real-time notification sent when new research is created",
-        "payload": {
-            "question": "string",
-            "answer": "string",
-            "username": "string"
-        }
     }
-})
+)
 def post():
     json_data = request.get_json()
 

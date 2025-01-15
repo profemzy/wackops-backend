@@ -78,7 +78,6 @@ def extensions(app):
     swagger.init_app(app)
     flask_static_digest.init_app(app)
 
-
     return None
 
 
