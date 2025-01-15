@@ -30,7 +30,7 @@ def before_request():
     {
         "tags": ["Research"],
         "summary": "Get user research history",
-        "description": "Retrieves all research questions and answers for a specific user",
+        "description": "Get all research questions and answers for a user",
         "security": [{"Bearer": []}],
         "parameters": [
             {
@@ -60,7 +60,7 @@ def before_request():
                                     },
                                     "answer": {
                                         "type": "string",
-                                        "example": "Machine learning is a branch of artificial intelligence...",
+                                        "example": "Explain Machine learning",
                                     },
                                     "created_on": {
                                         "type": "string",
@@ -138,7 +138,7 @@ def index():
     {
         "tags": ["Research"],
         "summary": "Create new research question",
-        "description": "Submit a question to get AI-generated answer and save the research",
+        "description": "Ask question to get AI-generated answer,save research",
         "security": [{"Bearer": []}],
         "parameters": [
             {
@@ -151,7 +151,7 @@ def index():
                         "question": {
                             "type": "string",
                             "example": "What is machine learning?",
-                            "description": "The research question to be answered",
+                            "description": "Research question to be answered",
                         }
                     },
                     "required": ["question"],
@@ -174,7 +174,7 @@ def index():
                                 },
                                 "answer": {
                                     "type": "string",
-                                    "example": "Machine learning is a branch of artificial intelligence...",
+                                    "example": "Explain Machine learning",
                                 },
                                 "created_on": {
                                     "type": "string",
@@ -213,7 +213,7 @@ def index():
             "name": "Pusher Event",
             "url": "private-research",
             "event": "new-research",
-            "description": "Real-time notification sent when new research is created",
+            "description": "Notification sent when new research is created",
             "payload": {
                 "question": "string",
                 "answer": "string",

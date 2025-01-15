@@ -21,7 +21,7 @@ auth = Blueprint("auth", __name__, url_prefix="/")
     {
         "tags": ["Authentication"],
         "summary": "Authenticate user and obtain access token",
-        "description": "Endpoint for user login. Returns JWT token on successful authentication.",
+        "description": "User login, returns JWT token on successful login.",
         "parameters": [
             {
                 "name": "credentials",
@@ -133,7 +133,7 @@ def post():
     {
         "tags": ["Authentication"],
         "summary": "Logout current user",
-        "description": "Invalidates the current JWT token and removes related cookies",
+        "description": "Invalidates current JWT token,removes related cookies",
         "security": [{"Bearer": []}],
         "responses": {
             "200": {
@@ -177,7 +177,7 @@ def delete():
     {
         "tags": ["Authentication"],
         "summary": "Authenticate Pusher connection",
-        "description": "Authenticates a Pusher connection for real-time updates",
+        "description": "Authenticates Pusher connection for real-time updates",
         "security": [{"Bearer": []}],
         "parameters": [
             {

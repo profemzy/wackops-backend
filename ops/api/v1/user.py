@@ -24,7 +24,7 @@ def before_request():
     {
         "tags": ["Users"],
         "summary": "Get all users",
-        "description": "Returns a list of all registered users. Requires authentication.",
+        "description": "Returns all users. Requires authentication.",
         "security": [{"Bearer": []}],
         "responses": {
             "200": {
@@ -78,7 +78,7 @@ def index():
     {
         "tags": ["Users"],
         "summary": "Register new user",
-        "description": "Creates a new user account. No authentication required.",
+        "description": "Creates a new user account.",
         "parameters": [
             {
                 "name": "body",
