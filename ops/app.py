@@ -2,6 +2,7 @@ from celery import Celery
 from celery import Task
 from flask import Flask
 from flask import jsonify
+from flask_cors import CORS
 from werkzeug.debug import DebuggedApplication
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -77,6 +78,7 @@ def extensions(app):
     db.init_app(app)
     swagger.init_app(app)
     flask_static_digest.init_app(app)
+    CORS(app)
 
     return None
 
