@@ -11,7 +11,7 @@ from marshmallow import ValidationError
 from lib.flask_pusher import pusher
 from ops.research.models import Research
 from ops.research.schemas import add_research_schema
-from ops.research.schemas import research_schema
+from ops.research.schemas import researches_schema
 from ops.user.models import User
 from utils.openai import get_answer
 
@@ -128,7 +128,7 @@ def index():
         Research.created_on.desc()
     )
 
-    response = {"data": research_schema.dump(all_researches)}
+    response = {"data": researches_schema.dump(all_researches)}
 
     return jsonify(response), 200
 

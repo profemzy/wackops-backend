@@ -75,7 +75,7 @@ spec:
                 name: backend-secrets
         - name: PUSHER_CLUSTER
           value: us3
-        image: aksacrtitanselxmjv3x.azurecr.io/wackops-backend:411fd96265fe8b878ef6e9fbee77d064d49c07e5
+        image: aksacrtitanselxmjv3x.azurecr.io/wackops-backend:e5a81077e8b074467d15278dcf2faf90328da461
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
