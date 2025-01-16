@@ -37,3 +37,4 @@ faker==33.3.0
 pytz==2024.2
 
 flasgger==0.9.7.1
+tenacity==8.1.0
