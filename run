@@ -170,6 +170,10 @@ function ci:test {
 
   # shellcheck disable=SC1091
   . .env
+
+  AZURE_OPENAI_ENDPOINT=$(echo ${{ secrets.AZURE_OPENAI_ENDPOINT }} )
+  AZURE_OPENAI_API_KEY=$(echo ${{ secrets.AZURE_OPENAI_KEY }} )
+
   wait-until "docker compose exec -T \
     -e PGPASSWORD=${POSTGRES_PASSWORD} postgres \
     psql -U ${POSTGRES_USER} ${POSTGRES_USER} -c 'SELECT 1'"

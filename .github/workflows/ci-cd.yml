@@ -27,9 +27,6 @@ jobs:
           # Remove volumes in CI to avoid permission errors due to UID / GID.
           sed -i "s|.:/app|/tmp:/tmp|g" .env*
           sed -i "s|.:/app|/tmp:/tmp|g" compose.yaml
-
-          AZURE_OPENAI_ENDPOINT=$(echo ${{ secrets.AZURE_OPENAI_ENDPOINT }} )
-          AZURE_OPENAI_API_KEY=$(echo ${{ secrets.AZURE_OPENAI_KEY }} )
           
           ./run ci:test
 
