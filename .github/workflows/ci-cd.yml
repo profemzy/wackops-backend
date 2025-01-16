@@ -28,6 +28,9 @@ jobs:
           sed -i "s|.:/app|/tmp:/tmp|g" .env*
           sed -i "s|.:/app|/tmp:/tmp|g" compose.yaml
 
+          AZURE_OPENAI_ENDPOINT=$(echo ${{ secrets.AZURE_OPENAI_ENDPOINT }} )
+          AZURE_OPENAI_API_KEY=$(echo ${{ secrets.AZURE_OPENAI_KEY }} )
+          
           ./run ci:test
 
   build_and_push:
