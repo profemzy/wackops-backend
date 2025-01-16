@@ -2,13 +2,9 @@ import os
 
 from openai import AzureOpenAI
 
-endpoint = os.getenv(
-    "AZURE_OPENAI_ENDPOINT", "https://eastus.api.cognitive.microsoft.com/"
-)
+endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
 deployment = os.getenv("DEPLOYMENT_NAME", "gpt-4o")
-subscription_key = os.getenv(
-    "AZURE_OPENAI_API_KEY", "REPLACE_WITH_YOUR_KEY_VALUE_HERE"
-)
+subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
 
 # Initialize Azure OpenAI client with key-based authentication
 client = AzureOpenAI(
