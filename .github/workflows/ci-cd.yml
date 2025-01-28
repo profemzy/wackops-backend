@@ -1,90 +1,90 @@
-name: "CI/CD Azure Kubernetes Service"
+# name: "CI/CD Azure Kubernetes Service"
 
-on:
-  pull_request:
-    branches:
-      - "*"
-  push:
-    branches:
-      - "main"
-      - "master"
-  schedule:
-    - cron: "30 12 * * *"
+# on:
+#   pull_request:
+#     branches:
+#       - "*"
+#   push:
+#     branches:
+#       - "main"
+#       - "master"
+#   schedule:
+#     - cron: "30 12 * * *"
 
-jobs:
-  test:
-    runs-on: "ubuntu-22.04"
-    env:
-      AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
-      AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
+# jobs:
+#   test:
+#     runs-on: "ubuntu-22.04"
+#     env:
+#       AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+#       AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
 
-    steps:
-      - uses: "actions/checkout@v4"
+#     steps:
+#       - uses: "actions/checkout@v4"
 
-      - name: "Install CI dependencies"
-        run: |
-          ./run ci:install-deps
+#       - name: "Install CI dependencies"
+#         run: |
+#           ./run ci:install-deps
 
-      - name: "Test"
-        run: |
-          # Remove volumes in CI to avoid permission errors due to UID / GID.
-          sed -i "s|.:/app|/tmp:/tmp|g" .env*
-          sed -i "s|.:/app|/tmp:/tmp|g" compose.yaml
+#       - name: "Test"
+#         run: |
+#           # Remove volumes in CI to avoid permission errors due to UID / GID.
+#           sed -i "s|.:/app|/tmp:/tmp|g" .env*
+#           sed -i "s|.:/app|/tmp:/tmp|g" compose.yaml
           
-          ./run ci:test
+#           ./run ci:test
 
-  build_and_push:
-    runs-on: "ubuntu-22.04"
-    needs: test
+#   build_and_push:
+#     runs-on: "ubuntu-22.04"
+#     needs: test
 
-    steps:
-      - uses: "actions/checkout@v4"
+#     steps:
+#       - uses: "actions/checkout@v4"
 
-      - name: "Log in to Azure"
-        uses: "azure/login@v1"
-        with:
-          creds: "${{ secrets.AZURE_CREDENTIALS }}"
+#       - name: "Log in to Azure"
+#         uses: "azure/login@v1"
+#         with:
+#           creds: "${{ secrets.AZURE_CREDENTIALS }}"
 
-      - name: "Log in to Azure Container Registry"
-        uses: "azure/docker-login@v1"
-        with:
-          login-server: "${{ secrets.ACR_LOGIN_SERVER }}"
-          username: "${{ secrets.ACR_USERNAME }}"
-          password: "${{ secrets.ACR_PASSWORD }}"
+#       - name: "Log in to Azure Container Registry"
+#         uses: "azure/docker-login@v1"
+#         with:
+#           login-server: "${{ secrets.ACR_LOGIN_SERVER }}"
+#           username: "${{ secrets.ACR_USERNAME }}"
+#           password: "${{ secrets.ACR_PASSWORD }}"
 
-      - name: "Build and push Docker image"
-        run: |
-          IMAGE_NAME=${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend  
-          docker build --build-arg UID=1000 --build-arg GID=1000 --build-arg FLASK_DEBUG=false --build-arg NODE_ENV=production -t $IMAGE_NAME:latest .
-          docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ github.sha }}
-          docker push $IMAGE_NAME:latest
-          docker push $IMAGE_NAME:${{ github.sha }}
+#       - name: "Build and push Docker image"
+#         run: |
+#           IMAGE_NAME=${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend  
+#           docker build --build-arg UID=1000 --build-arg GID=1000 --build-arg FLASK_DEBUG=false --build-arg NODE_ENV=production -t $IMAGE_NAME:latest .
+#           docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ github.sha }}
+#           docker push $IMAGE_NAME:latest
+#           docker push $IMAGE_NAME:${{ github.sha }}
 
-  deploy:
-    runs-on: "ubuntu-22.04"
-    needs: build_and_push
+#   deploy:
+#     runs-on: "ubuntu-22.04"
+#     needs: build_and_push
 
-    steps:
-      - uses: "actions/checkout@v4"
+#     steps:
+#       - uses: "actions/checkout@v4"
 
-      - name: "Set up kubectl"
-        uses: "azure/setup-kubectl@v3"
-        with:
-          version: "latest"
+#       - name: "Set up kubectl"
+#         uses: "azure/setup-kubectl@v3"
+#         with:
+#           version: "latest"
 
-      - name: "Azure Login"
-        uses: "azure/login@v1"
-        with:
-          creds: "${{ secrets.AZURE_CREDENTIALS }}"
+#       - name: "Azure Login"
+#         uses: "azure/login@v1"
+#         with:
+#           creds: "${{ secrets.AZURE_CREDENTIALS }}"
 
-      - name: "Get AKS credentials"
-        run: |
-          az aks get-credentials --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }}
+#       - name: "Get AKS credentials"
+#         run: |
+#           az aks get-credentials --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }}
 
-      - name: "Update deployment image"
-        run: |
-          kubectl -n wackops set image deployment/wackops-backend backend=${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend:${{ github.sha }}
+#       - name: "Update deployment image"
+#         run: |
+#           kubectl -n wackops set image deployment/wackops-backend backend=${{ secrets.ACR_LOGIN_SERVER }}/wackops-backend:${{ github.sha }}
 
-      - name: "Verify deployment"
-        run: |
-          kubectl -n wackops rollout status deployment/wackops-backend
+#       - name: "Verify deployment"
+#         run: |
+#           kubectl -n wackops rollout status deployment/wackops-backend
